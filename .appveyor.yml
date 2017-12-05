@@ -1,0 +1,47 @@
+version: '{build}'
+image: 'Visual Studio 2017'
+
+clone_folder: 'c:\go\src\github.com\drone-plugins\drone-codacy'
+
+environment:
+  DOCKER_USERNAME:
+    secure: '4YzzahbEiMZQJpOCOd1LAw=='
+  DOCKER_PASSWORD:
+    secure: 'VqO/G3Zfslu6zSLdwHKO+Q=='
+
+install:
+  - ps: |
+      docker version
+      go version
+
+build_script:
+  - ps: |
+      if ( $env:APPVEYOR_REPO_TAG ) {
+        go build -v -ldflags "-X main.version=$env:APPVEYOR_REPO_TAG_NAME -X main.build=$env:APPVEYOR_BUILD_VERSION" -a -o drone-codacy.exe
+      } else {
+        go build -v -ldflags "-X main.version=master -X main.build=$env:APPVEYOR_BUILD_VERSION" -a -o drone-codacy.exe
+      }
+
+      docker pull microsoft/nanoserver:10.0.14393.1593
+      docker build -f Dockerfile.windows -t plugins/codacy:windows .
+
+test_script:
+  - ps: |
+      docker run --rm plugins/codacy:windows --version
+
+deploy_script:
+  - ps: |
+      $ErrorActionPreference = 'Stop';
+
+      if ( $env:APPVEYOR_PULL_REQUEST_NUMBER ) {
+        Write-Host Nothing to deploy.
+      } else {
+        docker login --username $env:DOCKER_USERNAME --password $env:DOCKER_PASSWORD
+
+        if ( $env:APPVEYOR_REPO_TAG ) {
+          docker tag plugins/codacy:windows plugins/codacy:$env:APPVEYOR_REPO_TAG_NAME-windows
+          docker push plugins/codacy:$env:APPVEYOR_REPO_TAG_NAME-windows
+        } else {
+          docker push plugins/codacy:windows
+        }
+      }
