@@ -64,7 +64,6 @@ pipeline:
     auto_tag: true
     dockerfile: Dockerfile
     when:
-      branch: master
       event: [ push, tag ]
 
   publish_linux_i386:
@@ -77,7 +76,6 @@ pipeline:
     auto_tag_suffix: i386
     dockerfile: Dockerfile.i386
     when:
-      branch: master
       event: [ push, tag ]
 
   publish_linux_arm64:
@@ -90,7 +88,6 @@ pipeline:
     auto_tag_suffix: arm64
     dockerfile: Dockerfile.arm64
     when:
-      branch: master
       event: [ push, tag ]
 
   publish_linux_arm:
@@ -103,7 +100,6 @@ pipeline:
     auto_tag_suffix: arm
     dockerfile: Dockerfile.arm
     when:
-      branch: master
       event: [ push, tag ]
 
   microbadger:
