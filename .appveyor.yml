@@ -5,10 +5,6 @@ platform: x64
 clone_folder: 'c:\go\src\github.com\drone-plugins\drone-codacy'
 max_jobs: 1
 
-branches:
-  only:
-    - master
-
 environment:
   DOCKER_USERNAME:
     secure: '4YzzahbEiMZQJpOCOd1LAw=='
@@ -56,6 +52,8 @@ deploy_script:
           docker tag plugins/codacy:windows plugins/codacy:$major-windows
           docker push plugins/codacy:$major-windows
         } else {
-          docker push plugins/codacy:windows
+          if ( $env:APPVEYOR_REPO_BRANCH -eq 'master' ) {
+            docker push plugins/codacy:windows
+          }
         }
       }

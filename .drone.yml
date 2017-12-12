@@ -8,7 +8,10 @@ pipeline:
     pull: true
     commands:
       - go vet
-      - go test -cover -coverprofile=coverage.out
+      - |
+        for PKG in $(go list ./... | grep -v /vendor/); do
+          go test -cover -coverprofile $PKG/coverage.out $PKG
+        done
 
   build_linux_amd64:
     image: golang:1.9
@@ -84,7 +87,6 @@ pipeline:
     auto_tag: true
     dockerfile: Dockerfile
     when:
-      branch: master
       event: [ push, tag ]
 
   publish_linux_i386:
@@ -97,7 +99,6 @@ pipeline:
     auto_tag_suffix: i386
     dockerfile: Dockerfile.i386
     when:
-      branch: master
       event: [ push, tag ]
 
   publish_linux_arm64:
@@ -110,7 +111,6 @@ pipeline:
     auto_tag_suffix: arm64
     dockerfile: Dockerfile.arm64
     when:
-      branch: master
       event: [ push, tag ]
 
   publish_linux_arm:
@@ -123,7 +123,6 @@ pipeline:
     auto_tag_suffix: arm
     dockerfile: Dockerfile.arm
     when:
-      branch: master
       event: [ push, tag ]
 
   microbadger:
@@ -131,6 +130,4 @@ pipeline:
     pull: true
     secrets: [ webhook_url ]
     when:
-      branch: master
-      event: [ push, tag ]
       status: [ success ]
