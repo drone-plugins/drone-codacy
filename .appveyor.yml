@@ -21,7 +21,8 @@ build_script:
       if ( $env:APPVEYOR_REPO_TAG -eq 'false' ) {
         go build -ldflags "-X main.build=$env:APPVEYOR_BUILD_VERSION" -a -o drone-codacy.exe
       } else {
-        go build -ldflags "-X main.version=$env:APPVEYOR_REPO_TAG_NAME.substring(1) -X main.build=$env:APPVEYOR_BUILD_VERSION" -a -o drone-codacy.exe
+        $version = $env:APPVEYOR_REPO_TAG_NAME.substring(1)
+        go build -ldflags "-X main.version=$version -X main.build=$env:APPVEYOR_BUILD_VERSION" -a -o drone-codacy.exe
       }
 
       docker pull microsoft/nanoserver:10.0.14393.1593
@@ -42,6 +43,8 @@ deploy_script:
 
         if ( $env:APPVEYOR_REPO_TAG -eq 'true' ) {
           $major,$minor,$patch = $env:APPVEYOR_REPO_TAG_NAME.substring(1).split('.')
+
+          docker push plugins/codacy:windows
 
           docker tag plugins/codacy:windows plugins/codacy:$major.$minor.$patch-windows
           docker push plugins/codacy:$major.$minor.$patch-windows
