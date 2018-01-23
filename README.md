@@ -33,5 +33,7 @@ docker run --rm \
   -e PLUGIN_TOKEN=xxx \
   -e PLUGIN_PATTERN="coverage.out" \
   -e DRONE_COMMIT_SHA=7fd1a60b01f91b314f59955a4e4d4e80d8edf11d \
+  -v $(pwd):$(pwd) \
+  -w $(pwd) \
   plugins/codacy
 ```

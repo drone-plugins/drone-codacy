@@ -44,15 +44,15 @@ deploy_script:
         if ( $env:APPVEYOR_REPO_TAG -eq 'true' ) {
           $major,$minor,$patch = $env:APPVEYOR_REPO_TAG_NAME.substring(1).split('.')
 
-          docker push plugins/codacy:windows
+          docker push plugins/codacy:windows-amd64
 
-          docker tag plugins/codacy:windows plugins/codacy:$major.$minor.$patch-windows
+          docker tag plugins/codacy:windows-amd64 plugins/codacy:$major.$minor.$patch-windows-amd64
           docker push plugins/codacy:$major.$minor.$patch-windows-amd64
 
-          docker tag plugins/codacy:windows plugins/codacy:$major.$minor-windows
+          docker tag plugins/codacy:windows-amd64 plugins/codacy:$major.$minor-windows-amd64
           docker push plugins/codacy:$major.$minor-windows-amd64
 
-          docker tag plugins/codacy:windows plugins/codacy:$major-windows
+          docker tag plugins/codacy:windows-amd64 plugins/codacy:$major-windows-amd64
           docker push plugins/codacy:$major-windows-amd64
         } else {
           if ( $env:APPVEYOR_REPO_BRANCH -eq 'master' ) {
