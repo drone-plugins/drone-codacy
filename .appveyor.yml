@@ -26,11 +26,11 @@ build_script:
       }
 
       docker pull microsoft/nanoserver:10.0.14393.1593
-      docker build -f Dockerfile.windows -t plugins/codacy:windows .
+      docker build -f Dockerfile.windows -t plugins/codacy:windows-amd64 .
 
 test_script:
   - ps: |
-      docker run --rm plugins/codacy:windows --version
+      docker run --rm plugins/codacy:windows-amd64 --version
 
 deploy_script:
   - ps: |
@@ -47,16 +47,16 @@ deploy_script:
           docker push plugins/codacy:windows
 
           docker tag plugins/codacy:windows plugins/codacy:$major.$minor.$patch-windows
-          docker push plugins/codacy:$major.$minor.$patch-windows
+          docker push plugins/codacy:$major.$minor.$patch-windows-amd64
 
           docker tag plugins/codacy:windows plugins/codacy:$major.$minor-windows
-          docker push plugins/codacy:$major.$minor-windows
+          docker push plugins/codacy:$major.$minor-windows-amd64
 
           docker tag plugins/codacy:windows plugins/codacy:$major-windows
-          docker push plugins/codacy:$major-windows
+          docker push plugins/codacy:$major-windows-amd64
         } else {
           if ( $env:APPVEYOR_REPO_BRANCH -eq 'master' ) {
-            docker push plugins/codacy:windows
+            docker push plugins/codacy:windows-amd64
           }
         }
       }
