@@ -6,5 +6,5 @@ LABEL maintainer="Drone.IO Community <drone-dev@googlegroups.com>" `
   org.label-schema.vendor="Drone.IO Community" `
   org.label-schema.schema-version="1.0"
 
-ADD drone-codacy.exe /drone-codacy.exe
-ENTRYPOINT [ "\\drone-codacy.exe" ]
+ADD drone-codacy.exe c:\drone-codacy.exe
+ENTRYPOINT [ "c:\\drone-codacy.exe" ]
