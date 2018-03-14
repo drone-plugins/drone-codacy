@@ -18,11 +18,14 @@ install:
 
 build_script:
   - ps: |
+      go get -u github.com/golang/dep/cmd/dep
+      dep ensure
+
       if ( $env:APPVEYOR_REPO_TAG -eq 'false' ) {
-        go build -ldflags "-X main.build=$env:APPVEYOR_BUILD_VERSION" -a -o drone-codacy.exe
+        go build -ldflags "-X main.build=$env:APPVEYOR_BUILD_VERSION" -a -o release/drone-codacy.exe
       } else {
         $version = $env:APPVEYOR_REPO_TAG_NAME.substring(1)
-        go build -ldflags "-X main.version=$version -X main.build=$env:APPVEYOR_BUILD_VERSION" -a -o drone-codacy.exe
+        go build -ldflags "-X main.version=$version -X main.build=$env:APPVEYOR_BUILD_VERSION" -a -o release/drone-codacy.exe
       }
 
       docker pull microsoft/nanoserver:10.0.14393.1593
