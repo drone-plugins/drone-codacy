@@ -7,7 +7,6 @@
 [![](https://images.microbadger.com/badges/image/plugins/codacy.svg)](https://microbadger.com/images/plugins/codacy "Get your own image badge on microbadger.com")
 [![Go Doc](https://godoc.org/github.com/drone-plugins/drone-codacy?status.svg)](http://godoc.org/github.com/drone-plugins/drone-codacy)
 [![Go Report](https://goreportcard.com/badge/github.com/drone-plugins/drone-codacy)](https://goreportcard.com/report/github.com/drone-plugins/drone-codacy)
-[![](https://images.microbadger.com/badges/image/plugins/codacy.svg)](https://microbadger.com/images/plugins/codacy "Get your own image badge on microbadger.com")
 
 Drone plugin to send coverage reports to [Codacy](https://www.codacy.com). For the usage information and a listing of the available options please take a look at [the docs](http://plugins.drone.io/drone-plugins/drone-codacy/).
 
