@@ -12,24 +12,31 @@ Drone plugin to send coverage reports to [Codacy](https://www.codacy.com). For t
 
 ## Build
 
-Build the binary with the following commands:
+Build the binary with the following command:
 
-```
-go build
+```console
+export GOOS=linux
+export GOARCH=amd64
+export CGO_ENABLED=0
+export GO111MODULE=on
+
+go build -v -a -tags netgo -o release/linux/amd64/drone-codacy
 ```
 
 ## Docker
 
-Build the Docker image with the following commands:
+Build the Docker image with the following command:
 
-```
-GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -a -tags netgo -o release/linux/amd64/drone-codacy
-docker build --rm -t plugins/codacy .
+```console
+docker build \
+  --label org.label-schema.build-date=$(date -u +"%Y-%m-%dT%H:%M:%SZ") \
+  --label org.label-schema.vcs-ref=$(git rev-parse --short HEAD) \
+  --file docker/Dockerfile.linux.amd64 --tag plugins/codacy .
 ```
 
 ### Usage
 
-```
+```console
 docker run --rm \
   -e PLUGIN_TOKEN=xxx \
   -e PLUGIN_PATTERN="coverage.out" \
