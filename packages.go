@@ -76,7 +76,7 @@ func (p *Packages) merge(initial, addition *cover.Profile) {
 
 		i := 0
 
-		if sortFunc(i) != true {
+		if !sortFunc(i) {
 			i = sort.Search(len(initial.Blocks)-start, sortFunc)
 		}
 

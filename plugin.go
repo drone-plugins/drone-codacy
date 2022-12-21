@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -117,7 +116,7 @@ func (p *Plugin) build() error {
 		return errors.Wrap(err, "failed to create tempdir")
 	}
 
-	tmpfile, err := ioutil.TempFile("", "codacy-")
+	tmpfile, err := os.CreateTemp("", "codacy-")
 
 	if err != nil {
 		return errors.Wrap(err, "failed to create tempfile")
